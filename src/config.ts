@@ -1,19 +1,21 @@
 import { Soc } from './types'
 
-declare let API_ENDPOINT: string
-declare let DEVELOPMENT: boolean
-declare let LOG_LEVEL: Soc.LogLevels
-declare let LOG_REMOTE_URL: string
-
-const c: Soc.Config = {
-    api: API_ENDPOINT,
-    development: DEVELOPMENT,
-    log: {
-        remoteUrl: LOG_REMOTE_URL,
-        level: LOG_LEVEL
+declare let process: {
+    env: {
+        PRODUCTION: string
+        API_ENDPOINT: string
+        LOG_REMOTE_URL: string
+        LOG_LEVEL: Soc.LogLevels
     }
 }
 
-if (c.development) console.table(c)
+const c: Soc.Config = {
+    api: process.env.API_ENDPOINT,
+    development: process.env.PRODUCTION !== 'true',
+    log: {
+        remoteUrl: process.env.LOG_REMOTE_URL,
+        level: process.env.LOG_LEVEL
+    }
+}
 
 export default c

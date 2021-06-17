@@ -52,21 +52,14 @@ const generateHtmlFromTemplate = new HtmlWebpackPlugin({
     template: paths.public + '/index.html', // template file
     filename: 'index.html' // output file
 })
-const dotEnv = new Dotenv({ path: './config/.env' })
-const defineProcessVariables = new webpack.DefinePlugin({
-    DEVELOPMENT: JSON.stringify(process.env.NODE_ENV === 'development'),
-    API_ENDPOINT: JSON.stringify('https://api-local.test.com/api/v2/'),
-    LOG_REMOTE_URL: JSON.stringify('https://logs-local.test.com/'),
-    LOG_LEVEL: JSON.stringify(process.env.LOG_LEVEL)
-})
+const dotEnv = new Dotenv({ path: process.env.NODE_ENV !== 'production' ? './config/.env' : './config/.env.production' })
 
 const plugins = [
     cleanBuildFolder,
     extractCssToSeparateFiles,
     copyAssets,
     generateHtmlFromTemplate,
-    dotEnv,
-    defineProcessVariables
+    dotEnv
 ]
 
 /**

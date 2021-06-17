@@ -1,14 +1,13 @@
-import CONFIG from '../config'
-
 import React, { Component } from 'react'
 
 import './app.styles.scss'
 
 class App extends Component {
-    private production = !CONFIG.development
     render (): React.ReactNode {
         return (
-            <div className='flex items-center justify-center h-screen' data-testid="App"/>
+            <div className='flex items-center justify-center h-screen text-5xl' data-testid="App">
+                Your awesome react app
+            </div>
         )
     }
 }
