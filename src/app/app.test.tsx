@@ -1,11 +1,15 @@
+import React from 'react'
 import { render, screen } from '@testing-library/react'
-import '@testing-library/jest-dom'
+import '@testing-library/jest-dom/extend-expect'
+
 import App from './app'
 
-test('check first div text', () => {
-  render(<App />)
-  const linkElement = screen.getByText(
-    /Webpack 5 boilerplate with React 17, Tailwind 2, using babel/i
-  )
-  expect(linkElement).toBeInTheDocument()
+describe('<App/>', () => {
+    test('it should mount', () => {
+        render(<App/>)
+
+        const app = screen.getByTestId('App')
+
+        expect(app).toBeInTheDocument()
+    })
 })

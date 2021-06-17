@@ -1,3 +1,4 @@
+/* eslint @typescript-eslint/no-var-requires: "off" */
 const paths = require('./paths')
 
 const webpack = require('webpack')
@@ -20,11 +21,10 @@ const entry = [paths.src + '/index.tsx']
  * @type {{path: string, filename: string, publicPath: string}}
  */
 const output = {
-  path: paths.build,
-  filename: '[name].bundle.js',
-  publicPath: '/',
+    path: paths.build,
+    filename: '[name].bundle.js',
+    publicPath: '/'
 }
-
 
 /**
  * Plugins
@@ -32,81 +32,88 @@ const output = {
 
 const cleanBuildFolder = new CleanWebpackPlugin()
 const extractCssToSeparateFiles = new MiniCssExtractPlugin({
-  filename: 'styles/[name].[contenthash].css',
-  chunkFilename: '[id].[contenthash].css',
+    filename: 'styles/[name].[contenthash].css',
+    chunkFilename: '[id].[contenthash].css'
 })
 const copyAssets = new CopyWebpackPlugin({
-  patterns: [
-    {
-      from: paths.src + '/assets',
-      to: 'assets',
-      globOptions: {
-        ignore: ['*.DS_Store'],
-      },
-    },
-  ],
+    patterns: [
+        {
+            from: paths.src + '/assets',
+            to: 'assets',
+            globOptions: {
+                ignore: ['*.DS_Store']
+            }
+        }
+    ]
 })
 const generateHtmlFromTemplate = new HtmlWebpackPlugin({
-  title: 'Project Title',
-  favicon: paths.src + '/assets/icons/favicon.ico',
-  template: paths.public + '/index.html', // template file
-  filename: 'index.html', // output file
+    title: 'Project Title',
+    favicon: paths.src + '/assets/icons/favicon.ico',
+    template: paths.public + '/index.html', // template file
+    filename: 'index.html' // output file
 })
 const dotEnv = new Dotenv({ path: './config/.env' })
 const defineProcessVariables = new webpack.DefinePlugin({
-  DEVELOPMENT: JSON.stringify(process.env.NODE_ENV === 'development'),
-  API_ENDPOINT: JSON.stringify('https://api-local.test.com/api/v2/'),
-  LOG_REMOTE_URL: JSON.stringify('https://logs-local.test.com/'),
-  LOG_LEVEL: JSON.stringify(process.env.LOG_LEVEL)
+    DEVELOPMENT: JSON.stringify(process.env.NODE_ENV === 'development'),
+    API_ENDPOINT: JSON.stringify('https://api-local.test.com/api/v2/'),
+    LOG_REMOTE_URL: JSON.stringify('https://logs-local.test.com/'),
+    LOG_LEVEL: JSON.stringify(process.env.LOG_LEVEL)
 })
 
 const plugins = [
-  cleanBuildFolder,
-  extractCssToSeparateFiles,
-  copyAssets,
-  generateHtmlFromTemplate,
-  dotEnv,
-  defineProcessVariables
+    cleanBuildFolder,
+    extractCssToSeparateFiles,
+    copyAssets,
+    generateHtmlFromTemplate,
+    dotEnv,
+    defineProcessVariables
 ]
 
 /**
  * Loaders
  */
 
+const eslintLoader = {
+    enforce: 'pre',
+    test: /\.(tsx|ts)$/,
+    exclude: /node_modules/,
+    use: [{ loader: 'eslint-loader', options: { configFile: paths.root + '/.eslintrc.json' } }]
+}
 const transpileTypescript = { test: /\.(tsx|ts)$/, exclude: /node_modules/, use: ['babel-loader'] }
 const loadStyles = {
-  test: /\.(css|scss|sass)$/,
-  use: [
-    MiniCssExtractPlugin.loader,
-    { loader: 'css-loader'},
-    { loader: 'sass-loader' },
-    {
-      loader: 'postcss-loader', // postcss loader needed for tailwindcss
-      options: {
-        postcssOptions: { ident: 'postcss', plugins: [tailwindcss, autoprefixer] }
-      }
-    }
-  ]
+    test: /\.(css|scss|sass)$/,
+    use: [
+        MiniCssExtractPlugin.loader,
+        { loader: 'css-loader' },
+        { loader: 'sass-loader' },
+        {
+            loader: 'postcss-loader', // postcss loader needed for tailwindcss
+            options: {
+                postcssOptions: { ident: 'postcss', plugins: [tailwindcss, autoprefixer] }
+            }
+        }
+    ]
 }
-const loadSvgs = {
-  test: /\.svg$/,
-  use: ['@svgr/webpack'],
+const loadSVGs = {
+    test: /\.svg$/,
+    use: ['@svgr/webpack']
 }
 const copyImagesToBuildFolder = { test: /\.(?:ico|gif|png|jpg|jpeg)$/i, type: 'asset/resource' }
-const inlineFontsAndSvgs = { test: /\.(woff(2)?|eot|ttf|otf|)$/, type: 'asset/inline' }
+const inlineFontsAndSVGs = { test: /\.(woff(2)?|eot|ttf|otf|)$/, type: 'asset/inline' }
 
 const rules = [
-  transpileTypescript,
-  loadStyles,
-  loadSvgs,
-  copyImagesToBuildFolder,
-  inlineFontsAndSvgs
+    transpileTypescript,
+    loadStyles,
+    loadSVGs,
+    copyImagesToBuildFolder,
+    inlineFontsAndSVGs,
+    eslintLoader
 ]
 
 module.exports = {
-  entry: entry,
-  output: output,
-  plugins: plugins,
-  module: { rules: rules },
-  resolve: { extensions: ['.ts', '.js', '.jsx', '.tsx'] },
+    entry: entry,
+    output: output,
+    plugins: plugins,
+    module: { rules: rules },
+    resolve: { extensions: ['.ts', '.js', '.jsx', '.tsx'] }
 }

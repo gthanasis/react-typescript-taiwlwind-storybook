@@ -1,3 +1,4 @@
+/* eslint @typescript-eslint/no-var-requires: "off" */
 const paths = require('./paths')
 const { merge } = require('webpack-merge')
 const common = require('./webpack.common.js')
@@ -11,37 +12,37 @@ const TerserPlugin = require('terser-webpack-plugin')
  * @type {{path: string, filename: string, publicPath: string}}
  */
 const output = {
-  path: paths.build,
-  publicPath: '/',
-  filename: 'js/[name].[contenthash].bundle.js',
+    path: paths.build,
+    publicPath: '/',
+    filename: 'js/[name].[contenthash].bundle.js'
 }
 
 const extractCSS = new MiniCssExtractPlugin({
-  filename: 'styles/[name].[contenthash].css',
-  chunkFilename: '[id].css',
+    filename: 'styles/[name].[contenthash].css',
+    chunkFilename: '[id].css'
 })
 
 const plugins = [extractCSS]
 
 const minimizers = [
-  `...`,
-  new TerserPlugin(),
-  new CssMinimizerPlugin(),
+    `...`,
+    new TerserPlugin(),
+    new CssMinimizerPlugin()
 ]
 
 module.exports = merge(common, {
-  mode: 'production',
-  devtool: false,
-  output: output,
-  plugins: plugins,
-  module: { rules: [] },
-  optimization: {
-    minimize: true,
-    minimizer: minimizers,
-  },
-  performance: {
-    hints: false,
-    maxEntrypointSize: 512000,
-    maxAssetSize: 512000,
-  },
+    mode: 'production',
+    devtool: false,
+    output: output,
+    plugins: plugins,
+    module: { rules: [] },
+    optimization: {
+        minimize: true,
+        minimizer: minimizers
+    },
+    performance: {
+        hints: false,
+        maxEntrypointSize: 512000,
+        maxAssetSize: 512000
+    }
 })

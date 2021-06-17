@@ -1,7 +1,6 @@
 export namespace Soc {
     export type LogLevels = 'info' | 'warn' | 'debug' | 'fatal' | 'error'
     export type Config = {
-        version: string
         api: string
         development: boolean,
         log: {
@@ -27,10 +26,10 @@ export namespace Soc {
         browserID: string
     }
     export type Logger = {
-        info: any
-        debug: any
-        warn: any
-        fatal: any
-        error: any
+        info: never
+        debug: never
+        warn: never
+        fatal: never
+        error: never
     }
 }

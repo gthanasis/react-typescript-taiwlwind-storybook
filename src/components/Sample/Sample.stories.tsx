@@ -1,6 +1,6 @@
 /* eslint-disable */
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import Menu from './Menu';
+import Sample from './Sample';
 
-storiesOf('Menu', module).add('default', () => <Menu />);
+storiesOf('Sample', module).add('default', () => <Sample />);
