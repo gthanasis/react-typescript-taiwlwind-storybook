@@ -3,7 +3,7 @@ import styles from './TemplateName.module.scss'
 
 const TemplateName = () => (
     <div className={styles.Sample} data-testid="TemplateName">
-    Sample Component
+        TemplateName Component
     </div>
 )
 
